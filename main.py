@@ -1,7 +1,7 @@
 import telebot
 from api import generate_image, save_image
 import os
-from config import BOT_TOKEN
+from config import BOT_TOKEN, LOG
 bot = telebot.TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=['start'])
@@ -11,6 +11,8 @@ def start(message):
 @bot.message_handler(content_types=['text'])
 def generate(message):
     prompt = message.text
+    if LOG:
+        print(f"#{message.from_user.id}@{message.from_user.username}: {prompt}")
     bot.send_chat_action(message.chat.id, 'typing')
     bot.send_message(message.chat.id, 'Generating your image...')
     try:
