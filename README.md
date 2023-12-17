@@ -7,8 +7,7 @@ This is a Telegram bot that generates images based on the text prompts you provi
 1. Clone this repository.
 2. Install the required Python packages using the provided `requirements.txt` file. This can be done by executing the `install.sh` script: 
 ```bash
-chmod +x install.sh
-./install.sh
+sudo bash install.sh
 ```
 
 ## API
@@ -33,8 +32,7 @@ Replace `'YOUR_TELEGRAM_BOT_TOKEN'` and `'YOUR_OPENAI_API_KEY'` with your actual
 
 To start the bot, execute:
 ```bash
-chmod +x install.sh
-./start.sh
+sudo bash start.sh
 ```
 
 To generate an image, type your prompt into the bot, and you'll receive the generated image.
