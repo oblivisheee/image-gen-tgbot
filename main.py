@@ -16,7 +16,7 @@ def generate(message):
     image_url = generate_image(prompt)
     image_path = os.path.join(os.getcwd(), 'image.jpg')
     save_image(image_url, image_path)
-    bot.send_chat_action(message.chat.id, 'upload_photo')  # Set status as 'upload_photo'
+    bot.send_chat_action(message.chat.id, 'upload_photo')
     with open(image_path, 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
     os.remove(image_path)
