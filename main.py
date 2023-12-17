@@ -6,7 +6,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Hello, I am a special utility for generating images. Just write a prompt and I'll generate an image.")
+    bot.send_message(message.chat.id, "Hello, I am a special utility designed to generate images. Simply provide a prompt and I will generate an image for you. We are using the SDXL model, so please ensure your prompt is compatible with its model.")
 
 @bot.message_handler(content_types=['text'])
 def generate(message):
