@@ -15,19 +15,20 @@ def generate(message):
 
 def generate_image_thread(message):
     prompt = message.text
+    user_id = message.from_user.id
     if LOG:
-        print(f"#{message.from_user.id}@{message.from_user.username}: {prompt}")
+        print(f"#{user_id}@{message.from_user.username}: {prompt}")
     bot.send_chat_action(message.chat.id, 'typing')
     bot.send_message(message.chat.id, 'Generating your image...')
     
     image_url = generate_image(prompt)
     if image_url is None:
         if LOG:
-            print(f'Error occurred while processing the prompt from user #{message.from_user.id}@{message.from_user.username}. The error could be due to NSFW content or an issue with the API.')
+            print(f'Error occurred while processing the prompt from user #{user_id}@{message.from_user.username}. The error could be due to NSFW content or an issue with the API.')
         bot.send_message(message.chat.id, 'Something went wrong, possibly, that was an NSFW alert, or problem with API, try again please.')
         return
     
-    image_path = os.path.join(os.getcwd(), 'image.jpg')
+    image_path = os.path.join(os.getcwd(), f'{user_id}-image.jpg')
     save_image(image_url, image_path)
     bot.send_chat_action(message.chat.id, 'upload_photo')
     with open(image_path, 'rb') as photo:
