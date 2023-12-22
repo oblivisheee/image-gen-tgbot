@@ -19,6 +19,6 @@ def save_image(url, path):
     response = requests.get(url)
     with open(path, 'wb') as file:
         file.write(response.content)
-
-image_url = generate_image("a white siamese cat")
-save_image(image_url, os.path.join(os.getcwd(), 'image.jpg'))
+if __name__ == '__main__':
+    image_url = generate_image("a white siamese cat")
+    save_image(image_url, os.path.join(os.getcwd(), 'image.jpg'))
