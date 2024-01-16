@@ -3,14 +3,28 @@ from api import generate_image, save_image
 import os
 from config import BOT_TOKEN, LOG
 from threading import Thread
+from white_list import check_whitelist
 bot = telebot.TeleBot(BOT_TOKEN, threaded=True)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Hello, I am a special utility designed to generate images. Simply provide a prompt and I will generate an image for you. We are using the SDXL model, so please ensure your prompt is compatible with its model.")
+    user_id = message.from_user.id
+    if not check_whitelist(user_id):
+        if LOG:
+            print(f"#{user_id}@{message.from_user.username}: trying to login")
+        return
+    welcome_message = "Hello, I am a special utility designed to generate images. " \
+                      "Simply provide a prompt and I will generate an image for you. " \
+                      "We are using the SDXL model, so please ensure your prompt is compatible with its model."
+    bot.send_message(message.chat.id, welcome_message)
 
 @bot.message_handler(content_types=['text'])
 def generate(message):
+    user_id = message.from_user.id
+    if not check_whitelist(user_id):
+        if LOG:
+            print(f"#{user_id}@{message.from_user.username}: trying to login")
+        return
     Thread(target=generate_image_thread, args=(message,)).start()
 
 def generate_image_thread(message):
@@ -34,7 +48,8 @@ def generate_image_thread(message):
     with open(image_path, 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
     os.remove(image_path)
-    bot.send_message(message.chat.id, 'Your image has been generated!')
+    bot.send_message(message.chat.id, 'Your image has been generated! To generate another image, simply send another prompt.')
+    print(f'#{user_id}@{message.from_user.username}: Image has been generated with prompt: {prompt}')   
 
 bot.polling(non_stop=True)
 
